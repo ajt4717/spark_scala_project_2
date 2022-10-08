@@ -2,7 +2,7 @@ package jobs
 
 import commons.mySparkSession
 import config.DevConfig
-import org.apache.spark
+import utils.myUtils.getHiveSession
 
 object job2 {
   def main(args : Array[String]) : Unit = {
@@ -13,11 +13,16 @@ object job2 {
 
     val sparkSessionSetup : mySparkSession = mySparkSession.initiateSparkSession()
     sparkSessionSetup.setSparkSession
+    //sparkSessionSetup.setHiveserver2JdbcUrl("dummyHiveJdbcUrlFromDevConfigFile")
+    sparkSessionSetup.setHiveserver2JdbcUrl("jdbc:hive2://192.168.1.148:10000")
     val sparkSession = sparkSessionSetup.getSparkSession
 
     println("*************** MY SPARK SESSION ***************")
     println("APP Name :" + sparkSession.sparkContext.appName);
     println("Deploy Mode :" + sparkSession.sparkContext.deployMode);
     println("Master :" + sparkSession.sparkContext.master);
+
+    val hive = getHiveSession(sparkSessionSetup)
+    //println("hive : " + hive)
   }
 }
