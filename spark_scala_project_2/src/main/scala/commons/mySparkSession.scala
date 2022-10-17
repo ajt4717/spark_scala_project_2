@@ -11,6 +11,10 @@ class mySparkSession {
       .master("local[1]")
       .appName("MySparkJob2")
       .getOrCreate();
+
+    spark.conf.set("dfs.blocksize",1024*1024*64)
+    spark.conf.set("parquet.blocksize",1024*1024*64)
+
   }
 
   def getSparkSession: SparkSession = {

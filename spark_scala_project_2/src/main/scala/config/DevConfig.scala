@@ -7,7 +7,8 @@ case class DevConfig(username : String,
                      password : String,
                      source : String,
                      target : String,
-                     url : String
+                     url : String,
+                     targetDb : String
                     )
 
 object DevConfig{
@@ -22,19 +23,20 @@ object DevConfig{
       val user = envConfig.getString("module1.user")
       val pwd = envConfig.getString("module1.password")
       val src = envConfig.getString("module1.source")
+      val tgtDb = envConfig.getString("module1.targetDb")
 
-      DevConfig(user,pwd,src,tgt,url)
+      DevConfig(user,pwd,src,tgt,url,tgtDb)
     }
 
     else if (module == "module2") {
       val user = envConfig.getString("module2.user")
       val pwd = envConfig.getString("module2.password")
 
-      DevConfig(user,pwd,"NA",tgt,url)
+      DevConfig(user,pwd,"NA",tgt,url,"NA")
     }
 
     else
-      DevConfig("NA","NA","NA","NA","NA")
+      DevConfig("NA","NA","NA","NA","NA","NA")
 
   }
 }
