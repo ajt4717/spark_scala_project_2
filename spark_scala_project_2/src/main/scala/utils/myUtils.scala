@@ -1,6 +1,6 @@
 package utils
 
-import commons.mySparkSession
+import commons.{MyException, mySparkSession}
 import com.hortonworks.hwc.HiveWarehouseSession
 import com.hortonworks.spark.sql.hive.llap.HiveWarehouseSessionImpl
 import org.apache.spark.sql.{DataFrame, SparkSession}
@@ -33,12 +33,20 @@ object myUtils {
       .load()
   }
 
-  def saveToHive(df : DataFrame, dbName : String, tableName : String, partition : Int) : Unit = {
-      try{
-        df.repartition(partition).write.mode("insert").saveAsTable(dbName + "." + tableName)
-      }
+  def saveToHive(df : DataFrame, dbName : String, tableName : String, partition : Int) : Unit =
+  {
+    try{
+      df.repartition(partition).write.mode("insert").saveAsTable(dbName + "." + tableName)
+    }
     catch{
-      case exception : Throwable => {}
+      //Ref
+      //https://www.geeksforgeeks.org/scala-try-catch-exceptions/
+      //https://stackoverflow.com/questions/49475236/scala-what-are-the-guarantees-of-the-catch-throwable
+
+      case exception : Throwable => {
+        MyException(this.getClass, "Failed while saving to hive", exception)
+        System.exit(1)
+      }
     }
   }
 
